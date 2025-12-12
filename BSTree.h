@@ -127,7 +127,7 @@ class BSTree {
 
 
 	//inserta elemento e de manera ordenada. actua como metodo lanzaderadel metodo privado recursivo
-	void intert (T e){
+	void insert (T e){
 		root = insert(root, e);
 		nelem++;
 	}
