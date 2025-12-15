@@ -33,19 +33,19 @@ class BSTreeDict: public Dict<V> {
         }
 
         // inicializo metodos heredados
-        void insert(string key, V value) override{
+        void insert(const string& key, const V& value) override{
             TableEntry<V> prueba(key, V());
-            
+
             bool existe = false;
-            
-            try{
+
+            try {
                 tree->search(prueba);
                 existe = true;
-            } catch (const runtime_error&){
-                existe = false;
+            } catch (const runtime_error&) {
+            existe = false;
             }
-        
-            if(existe){
+
+            if (existe) {
                 throw runtime_error("La key ya existe");
             } else {
                 TableEntry<V> entrada(key, value);
@@ -53,7 +53,8 @@ class BSTreeDict: public Dict<V> {
             }
         }
 
-        V search(string key) override{
+
+        V search(const string& key) const override{
             TableEntry<V> prueba(key, V());
 
             try{
@@ -64,7 +65,7 @@ class BSTreeDict: public Dict<V> {
             }
         }
         
-        V remove(string key) override {
+        V remove(const string& key) override {
             TableEntry<V> prueba(key, V());
         
             try {
@@ -78,7 +79,7 @@ class BSTreeDict: public Dict<V> {
             }
         }
 
-        int entries() override {
+        int entries() const override {
             return tree->size();
         }
 

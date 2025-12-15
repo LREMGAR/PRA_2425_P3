@@ -4,17 +4,18 @@
 #include <string>
 #include <ostream>
 
+using namespace std;
 template <typename V>
 class TableEntry {
     public:
         // Atributos públicos
-        std::string key;
+        string key;
         V value;
 
         // Constructores
-        TableEntry(std::string key, V value) : key(key), value(value) {}
-        TableEntry(std::string key) : key(key), value() {}
-        TableEntry() : key(""), value() {}
+        TableEntry(string key, V value) : key(key), value(value) {}
+        TableEntry(string key) : key(key) {}
+        TableEntry() : key(""){}
 
         // Sobrecarga de operadores
         friend bool operator==(const TableEntry<V> &te1, const TableEntry<V> &te2) {
@@ -25,10 +26,21 @@ class TableEntry {
             return te1.key != te2.key;
         }
 
+        friend bool operator<(const TableEntry<V> &te1, const TableEntry<V> &te2) {
+            return te1.key < te2.key;
+        }
+
+        friend bool operator>(const TableEntry<V> &te1, const TableEntry<V> &te2) {
+            return te1.key > te2.key;
+        }
+
         friend std::ostream& operator<<(std::ostream &out, const TableEntry<V> &te) {
             out << "(" << te.key << " -> " << te.value << ")";
             return out;
         }
+
+        
+
 };
 
 #endif
