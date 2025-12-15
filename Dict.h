@@ -2,16 +2,16 @@
 #define DICT_H
 #include <string>
 
+using namespace std;
+
 template <typename V> 
+
 class Dict {
     public:
         //métodos virtuales puros
-	virtual~Dict(){}
-	
-	//inserta un par clave-valor
-	virtual void insert(const std::string key, const V& value) = 0;
-	virtual V search(const std::string& key) const = 0;
-	virtual V remove(const std::string& key) = 0;
+	virtual void insert(string key, V value) = 0;
+	virtual V search(string key) const = 0;
+	virtual V remove(string key) = 0;
 	virtual int entries() = 0;
 };
 
