@@ -17,7 +17,7 @@ class HashTable : public Dict<V> {
         ListLinked<TableEntry<V>>* table; // array de listas enlazadas
 
         // Función hash: suma de ASCII % max
-        int h(string key) {
+        int h(const string& key) const{
             int sum = 0;
             for (int i = 0; i < key.length(); i++) {
                 sum += int(key.at(i));
@@ -35,7 +35,7 @@ class HashTable : public Dict<V> {
         }
 
         // Capacidad total
-        int capacity() {
+        int capacity() const {
             return max;
         }
 
@@ -52,7 +52,7 @@ class HashTable : public Dict<V> {
         }
 
         // Sobrecarga operador [], devuelve el valor de la clave
-        V operator[](string key) {
+        V operator[](string key) const {
             return search(key);
         }
 	
