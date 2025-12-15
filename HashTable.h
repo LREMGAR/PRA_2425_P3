@@ -8,7 +8,7 @@
 #include "TableEntry.h"
 
 #include "../PRA_2425_P1/ListLinked.h" 
-
+using namespace std;
 template <typename V>
 class HashTable : public Dict<V> {
     private:
@@ -17,9 +17,9 @@ class HashTable : public Dict<V> {
         ListLinked<TableEntry<V>>* table; // array de listas enlazadas
 
         // Función hash: suma de ASCII % max
-        int h(std::string key) {
+        int h(string key) {
             int sum = 0;
-            for (size_t i = 0; i < key.size(); i++) {
+            for (int i = 0; i < key.length(); i++) {
                 sum += int(key.at(i));
             }
             return sum % max;
@@ -27,14 +27,7 @@ class HashTable : public Dict<V> {
 
     public:
         // Constructor
-        HashTable(int size): n(0), max(size), table(nullptr) {
-            if(size <= 0) throw std::runtime_error("Tamaño de la tabla invalido.");
-            
-            table = new ListLinked<TableEntry<V>>*[max];
-            for(int i = 0; i < max; i++){
-                table[i] = new ListLinked<TableEntry<V>>();
-            }
-        }
+        HashTable(int size): n{0}, max{size}, table{new ListLinked<TableEntry<V>>[max]} {}
 
         // Destructor
         ~HashTable() {
@@ -47,44 +40,44 @@ class HashTable : public Dict<V> {
         }
 
          // Sobrecarga operador <<, imprimir contenido de la tabla
-        friend std::ostream& operator<<(std::ostream &out, const HashTable<V> &th) {
+        friend ostream& operator<<(ostream &out, const HashTable<V> &th) {
             out << "HashTable [entries: " << th.n << ", capacity: " << th.max << "]" << endl;
             for (int i = 0; i < th.max; i++) {
-                out << "Cubeta " << i << ": " << endl;
+                out << "Cubeta " << i << ": " << endl << endl;
                 //out << th.table[i] << std::endl; // suponiendo que ListLinked<T> sobrecarga <<
                 out << "List => " << th.table[i] << endl << endl;
             }
-            out << "\n"<< endl;
+            
             return out;
         }
 
         // Sobrecarga operador [], devuelve el valor de la clave
-        V operator[](std::string key) {
+        V operator[](string key) {
             return search(key);
         }
 	
         //metodos heredados 
         //funcion insertar clave-valor
-        void insert(std::string key, V value) override{
+        void insert(const string& key, const V& value) override{
 	        int pos = h(key);
 	        ListLinked<TableEntry<V>>& posicion = table[pos];
 	
-	        for (int i = 0; i < table[pos].size(); i++) {
-                if (table[pos].get(i).key == key) {
+	        for (int i = 0; i < posicion.size(); i++) {
+                if (posicion.get(i).key == key) {
                     throw runtime_error("Key: " + key + ",ya existe");
                 }
             }
 
             //en caso de aun no exista esa clave, crear un tableEntry completo y lo añade al final de la lista
-            table[pos].append(TableEntry<V>(key, value));
+            posicion.prepend(TableEntry<V>(key, value));
             n++;	
         }
 
-        int entries() override{
+        int entries() const override{
             return n;
         }
 
-        V search(std::string key) override {
+        V search(const string& key) const override{
             int pos = h(key);
             ListLinked<TableEntry<V>>& posicion = table[pos];
             
@@ -95,11 +88,11 @@ class HashTable : public Dict<V> {
                 }
             }
 
-            throw std::runtime_error("Key '" + key + "', no se ha encontrado.");
+            throw runtime_error("Key '" + key + "', no se ha encontrado.");
         }
 
         //funcion eliminar clave
-        V remove(std::string key) override{
+        V remove(const string& key) override{
     	    int pos = h(key);
             ListLinked<TableEntry<V>>& posicion = table[pos];
 
